@@ -37,12 +37,19 @@ class LoginController extends Controller
 
         // 2. Mencoba untuk mengautentikasi pengguna
         if (Auth::attempt($credentials)) {
-            // Jika berhasil, regenerate session untuk mencegah session fixation attacks
             $request->session()->regenerate();
-            
-            // Arahkan pengguna ke halaman yang seharusnya mereka tuju,
-            // atau ke dashboard jika tidak ada tujuan sebelumnya.
-            return redirect()->intended('/dashboard');
+            $user = Auth::user();
+            // Redirect sesuai role
+            if ($user->role === 'admin') {
+                return redirect()->intended('/dashboard');
+            } elseif ($user->role === 'user') {
+                return redirect()->intended('/dashboard');
+            } else {
+                Auth::logout();
+                return back()->withErrors([
+                    'email' => 'Role tidak dikenali.'
+                ]);
+            }
         }
 
         // 3. Jika gagal, kembali ke halaman login dengan pesan error

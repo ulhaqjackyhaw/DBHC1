@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitd9767044b1234831ea28377f27f2a946
+class ComposerStaticInit8b51786a59309b3c38483a041e3ad7b1
 {
     public static $files = array (
         '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
@@ -604,8 +604,16 @@ class ComposerStaticInitd9767044b1234831ea28377f27f2a946
         'App\\Http\\Controllers\\EmployeeController' => __DIR__ . '/../..' . '/app/Http/Controllers/EmployeeController.php',
         'App\\Http\\Controllers\\FormasiController' => __DIR__ . '/../..' . '/app/Http/Controllers/FormasiController.php',
         'App\\Http\\Controllers\\SnapshotController' => __DIR__ . '/../..' . '/app/Http/Controllers/SnapshotController.php',
+        'App\\Http\\Controllers\\UserController' => __DIR__ . '/../..' . '/app/Http/Controllers/UserController.php',
         'App\\Http\\Controllers\\VersionController' => __DIR__ . '/../..' . '/app/Http/Controllers/VersionController.php',
+        'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
+        'App\\Http\\Middleware\\Authenticate' => __DIR__ . '/../..' . '/app/Http/Middleware/Authenticate.php',
+        'App\\Http\\Middleware\\AuthorizeRole' => __DIR__ . '/../..' . '/app/Http/Middleware/AuthorizeRole.php',
+        'App\\Http\\Middleware\\CheckRoleMiddleware' => __DIR__ . '/../..' . '/app/Http/Middleware/CheckRoleMiddleware.php',
+        'App\\Http\\Middleware\\EncryptCookies' => __DIR__ . '/../..' . '/app/Http/Middleware/EncryptCookies.php',
         'App\\Http\\Middleware\\HandleLargeImport' => __DIR__ . '/../..' . '/app/Http/Middleware/HandleLargeImport.php',
+        'App\\Http\\Middleware\\RedirectIfAuthenticated' => __DIR__ . '/../..' . '/app/Http/Middleware/RedirectIfAuthenticated.php',
+        'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
         'App\\Imports\\DataKaryawanImport' => __DIR__ . '/../..' . '/app/Imports/DataKaryawanImport.php',
         'App\\Imports\\EmployeesImport' => __DIR__ . '/../..' . '/app/Imports/EmployeesImport.php',
         'App\\Imports\\FormasiImport' => __DIR__ . '/../..' . '/app/Imports/FormasiImport.php',
@@ -619,6 +627,7 @@ class ComposerStaticInitd9767044b1234831ea28377f27f2a946
         'App\\Models\\Version' => __DIR__ . '/../..' . '/app/Models/Version.php',
         'App\\Observers\\EmployeeObserver' => __DIR__ . '/../..' . '/app/Observers/EmployeeObserver.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
+        'App\\Providers\\AuthServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AuthServiceProvider.php',
         'App\\Providers\\EventServiceProvider' => __DIR__ . '/../..' . '/app/Providers/EventServiceProvider.php',
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'Brick\\Math\\BigDecimal' => __DIR__ . '/..' . '/brick/math/src/BigDecimal.php',
@@ -7813,10 +7822,10 @@ class ComposerStaticInitd9767044b1234831ea28377f27f2a946
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitd9767044b1234831ea28377f27f2a946::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitd9767044b1234831ea28377f27f2a946::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInitd9767044b1234831ea28377f27f2a946::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInitd9767044b1234831ea28377f27f2a946::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit8b51786a59309b3c38483a041e3ad7b1::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit8b51786a59309b3c38483a041e3ad7b1::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit8b51786a59309b3c38483a041e3ad7b1::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit8b51786a59309b3c38483a041e3ad7b1::$classMap;
 
         }, null, ClassLoader::class);
     }
