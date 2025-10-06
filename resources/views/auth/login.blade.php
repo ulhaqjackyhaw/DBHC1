@@ -242,7 +242,7 @@
         @csrf
         <div class="form-group">
           <label for="email">Alamat Email</label>
-          <input type="email" id="email" name="email" value="admin@hc.com" required/>
+          <input type="email" id="email" name="email" value="" required/>
         </div>
         <div class="form-group">
           <label for="password">Password</label>
