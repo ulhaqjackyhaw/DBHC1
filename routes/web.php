@@ -7,6 +7,7 @@ use App\Http\Controllers\FormasiController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\VersionController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,6 +43,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/', function () {
         return redirect()->route('dashboard.index');
     });
+
+    // Profile routes
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+    Route::put('/profile', [ProfileController::class, 'updateProfile'])->name('profile.update');
+    Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.update-password');
 
     // Dashboard dasar yang bisa diakses semua user
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
