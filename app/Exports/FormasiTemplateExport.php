@@ -30,6 +30,7 @@ class FormasiTemplateExport implements FromArray, WithHeadings, WithStyles
             'JABATAN',
             'KELOMPOK KELAS JABATAN',
             'GRADE',
+            'KUOTA',
         ];
     }
 
