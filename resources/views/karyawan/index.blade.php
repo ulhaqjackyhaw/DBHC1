@@ -48,6 +48,8 @@
         </div>
     @endif
 
+                       @can('admin')
+
     {{-- Bagian Upload Massal --}}
     <div class="bg-white p-4 sm:p-5 rounded-xl shadow-sm mb-5">
         <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
@@ -58,10 +60,7 @@
                     <i class="bi bi-file-earmark-arrow-down-fill"></i>
                     <span>Download Template</span>
                 </a>
-                <a href="{{ route('karyawan.export') }}" class="btn btn-success d-flex align-items-center gap-2">
-                    <i class="bi bi-download"></i>
-                    <span>Export Data Saat Ini</span>
-                </a>
+
             </div>
         </div>
         <div class="row g-3">
@@ -84,8 +83,12 @@
                 </form>
             </div>
         </div>
+                            @endcan
+
 
         {{-- Penjelasan Mode Upload --}}
+                            @can('admin')
+
         <div class="row g-3 mt-2">
             <div class="col-md-6">
                 <div class="alert alert-info mb-0 py-2">
@@ -112,6 +115,8 @@
             </div>
         </div>
     </div>
+                        @endcan
+
 
     {{-- Tabel Data --}}
     <div class="bg-white rounded-xl shadow-sm" x-data="employeeTable({{ $employees->toJson() ?? '[]' }})">
@@ -119,15 +124,24 @@
             {{-- Header Tabel --}}
             <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
                 <div class="d-flex align-items-center gap-2 flex-wrap">
-                    <a href="{{ route('karyawan.create') }}" class="btn btn-primary d-flex align-items-center gap-2">
-                        <i class="bi bi-plus-circle-fill"></i>
-                        <span class="text-nowrap">Tambah Data</span>
-                    </a>
+                    @can('admin')
+                        <a href="{{ route('karyawan.create') }}" class="btn btn-primary d-flex align-items-center gap-2">
+                            <i class="bi bi-plus-circle-fill"></i>
+                            <span class="text-nowrap">Tambah Data</span>
+                        </a>
+                    @endcan
+                     @can('admin')
                     <a href="{{ route('versions.index') }}" class="btn btn-outline-info d-flex align-items-center gap-2">
                         <i class="bi bi-archive-fill"></i>
                         <span class="text-nowrap">History Versi Data</span>
                     </a>
+                        @endcan
+                    <a href="{{ route('karyawan.export') }}" class="btn btn-success d-flex align-items-center gap-2">
+                    <i class="bi bi-download"></i>
+                    <span>Export Data Saat Ini</span>
+                </a>
                 </div>
+               
                 {{-- Sisi Kanan: Filter dan Search --}}
                 <div class="d-flex align-items-center gap-3">
                     <div class="d-flex align-items-center gap-2">

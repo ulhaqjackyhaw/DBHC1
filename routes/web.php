@@ -56,16 +56,25 @@ Route::middleware('auth')->group(function () {
     Route::get('/analitikorganic', [EmployeeController::class, 'analitikOrganic'])->name('analitik.organic');
     Route::get('/analitikoutsourcing', [EmployeeController::class, 'analitikOutsourcing'])->name('analitik.outsourcing');
 
-    // Route view & download yang bisa diakses semua user
-    Route::get('/data-karyawan/template/download', [DataKaryawanController::class, 'downloadTemplate'])->name('karyawan.template.download');
-    Route::get('/data-karyawan/export', [DataKaryawanController::class, 'export'])->name('karyawan.export');
-    Route::get('/data-karyawan', [DataKaryawanController::class, 'index'])->name('karyawan.index');
-    Route::get('/data-karyawan/{dataKaryawan}', [DataKaryawanController::class, 'show'])->name('karyawan.show');
+    // Data Karyawan - Basic access routes (view only)
+    Route::prefix('data-karyawan')->name('karyawan.')->group(function () {
+        Route::get('/', [DataKaryawanController::class, 'index'])->name('index');
+        Route::get('/create', [DataKaryawanController::class, 'create'])->name('create');
+        Route::post('/', [DataKaryawanController::class, 'store'])->name('store');
+        Route::get('/template/download', [DataKaryawanController::class, 'downloadTemplate'])->name('template.download');
+        Route::get('/export', [DataKaryawanController::class, 'export'])->name('export');
+        // Note: {dataKaryawan} route must be last to avoid conflicting with other routes
+        Route::get('/{dataKaryawan}', [DataKaryawanController::class, 'show'])->name('show');
+    });
 
-    Route::get('/formasi/template/download', [FormasiController::class, 'downloadTemplate'])->name('formasi.template.download');
-    Route::get('/formasi/export', [FormasiController::class, 'export'])->name('formasi.export');
-    Route::get('/formasi', [FormasiController::class, 'index'])->name('formasi.index');
-    Route::get('/formasi/{formasi}', [FormasiController::class, 'show'])->name('formasi.show');
+    // Formasi - Basic access routes (view only)
+    Route::prefix('formasi')->name('formasi.')->group(function () {
+        Route::get('/', [FormasiController::class, 'index'])->name('index');
+        Route::get('/template/download', [FormasiController::class, 'downloadTemplate'])->name('template.download');
+        Route::get('/export', [FormasiController::class, 'export'])->name('export');
+        // Note: {formasi} route must be last to avoid conflicting with other routes
+        Route::get('/{formasi}', [FormasiController::class, 'show'])->name('show');
+    });
 });
 
 /*
@@ -74,27 +83,51 @@ Route::middleware('auth')->group(function () {
 |--------------------------------------------------------------------------
 */
 
+// Add debug logging for admin routes
 Route::middleware(['auth', 'can:admin'])->group(function () {
+    \Log::info('Accessing admin route', [
+        'user' => auth()->check() ? auth()->user()->email : 'guest',
+        'role' => auth()->check() ? auth()->user()->role : 'none',
+        'url' => request()->url()
+    ]);
+
     // Dashboard admin-only features
     Route::get('/dashboard/jabatan-lowong-detail', [DashboardController::class, 'getJabatanLowongDetail'])->name('dashboard.jabatan.detail');
     Route::get('/dashboard/jabatan-lowong-export', [DashboardController::class, 'exportJabatanLowongDetail'])->name('dashboard.jabatan.export');
 
-    // Data Karyawan admin features
-    Route::post('/data-karyawan/import-add', [DataKaryawanController::class, 'importAdd'])
-        ->middleware('large.import')->name('karyawan.import.add');
-    Route::post('/data-karyawan/import-replace', [DataKaryawanController::class, 'importReplace'])
-        ->middleware('large.import')->name('karyawan.import.replace');
-    Route::resource('/data-karyawan', DataKaryawanController::class)
-        ->except(['index', 'show'])
-        ->parameters(['data-karyawan' => 'dataKaryawan'])
-        ->names('karyawan');
+    // Data Karyawan - Admin features
+    Route::prefix('data-karyawan')->name('karyawan.')->group(function () {
+        // Create operation - must come before the {dataKaryawan} route
+        Route::get('/create', [DataKaryawanController::class, 'create'])->name('create');
+        Route::post('/', [DataKaryawanController::class, 'store'])->name('store');
 
-    // Formasi admin features
-    Route::post('/formasi/import-add', [FormasiController::class, 'importAdd'])
-        ->middleware('large.import')->name('formasi.import.add');
-    Route::post('/formasi/import-replace', [FormasiController::class, 'importReplace'])
-        ->middleware('large.import')->name('formasi.import.replace');
-    Route::resource('/formasi', FormasiController::class)->except(['index', 'show']);
+        // Import operations with large.import middleware
+        Route::middleware('large.import')->group(function () {
+            Route::post('import-add', [DataKaryawanController::class, 'importAdd'])->name('import.add');
+            Route::post('import-replace', [DataKaryawanController::class, 'importReplace'])->name('import.replace');
+        });
+
+        // Resource operations that use {dataKaryawan} parameter must come last
+        Route::get('{dataKaryawan}/edit', [DataKaryawanController::class, 'edit'])->name('edit');
+        Route::put('{dataKaryawan}', [DataKaryawanController::class, 'update'])->name('update');
+        Route::delete('{dataKaryawan}', [DataKaryawanController::class, 'destroy'])->name('destroy');
+    });
+
+    // Formasi - Admin features
+    Route::prefix('formasi')->name('formasi.')->group(function () {
+        // Create, Edit, Delete operations
+        Route::get('/create', [FormasiController::class, 'create'])->name('create');
+        Route::post('/', [FormasiController::class, 'store'])->name('store');
+        Route::get('/{formasi}/edit', [FormasiController::class, 'edit'])->name('edit');
+        Route::put('/{formasi}', [FormasiController::class, 'update'])->name('update');
+        Route::delete('/{formasi}', [FormasiController::class, 'destroy'])->name('destroy');
+
+        // Import operations with large.import middleware
+        Route::middleware('large.import')->group(function () {
+            Route::post('/import-add', [FormasiController::class, 'importAdd'])->name('import.add');
+            Route::post('/import-replace', [FormasiController::class, 'importReplace'])->name('import.replace');
+        });
+    });
 
     // Version control (admin only)
     Route::prefix('versions')->name('versions.')->group(function () {
