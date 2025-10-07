@@ -38,7 +38,7 @@ Route::post('logout', [LoginController::class, 'logout'])
 */
 
 // Route yang bisa diakses semua user yang sudah login
-Route::middleware('auth')->group(function () {
+Route::middleware('auth', )->group(function () {
     // Redirect root ke dashboard setelah login
     Route::get('/', function () {
         return redirect()->route('dashboard.index');
@@ -67,14 +67,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/{dataKaryawan}', [DataKaryawanController::class, 'show'])->name('show');
     });
 
-    // Formasi - Basic access routes (view only)
-    Route::prefix('formasi')->name('formasi.')->group(function () {
-        Route::get('/', [FormasiController::class, 'index'])->name('index');
-        Route::get('/template/download', [FormasiController::class, 'downloadTemplate'])->name('template.download');
-        Route::get('/export', [FormasiController::class, 'export'])->name('export');
-        // Note: {formasi} route must be last to avoid conflicting with other routes
-        Route::get('/{formasi}', [FormasiController::class, 'show'])->name('show');
-    });
+    // Formasi routes moved to admin section
 });
 
 /*
@@ -101,6 +94,7 @@ Route::middleware(['auth', 'can:admin'])->group(function () {
         Route::get('/create', [DataKaryawanController::class, 'create'])->name('create');
         Route::post('/', [DataKaryawanController::class, 'store'])->name('store');
 
+
         // Import operations with large.import middleware
         Route::middleware('large.import')->group(function () {
             Route::post('import-add', [DataKaryawanController::class, 'importAdd'])->name('import.add');
@@ -113,9 +107,14 @@ Route::middleware(['auth', 'can:admin'])->group(function () {
         Route::delete('{dataKaryawan}', [DataKaryawanController::class, 'destroy'])->name('destroy');
     });
 
-    // Formasi - Admin features
+    // Formasi - All routes (both admin and basic access)
     Route::prefix('formasi')->name('formasi.')->group(function () {
-        // Create, Edit, Delete operations
+        // Basic access routes (view only)
+        Route::get('/', [FormasiController::class, 'index'])->name('index');
+        Route::get('/template/download', [FormasiController::class, 'downloadTemplate'])->name('template.download');
+        Route::get('/export', [FormasiController::class, 'export'])->name('export');
+
+        // Admin-only operations
         Route::get('/create', [FormasiController::class, 'create'])->name('create');
         Route::post('/', [FormasiController::class, 'store'])->name('store');
         Route::get('/{formasi}/edit', [FormasiController::class, 'edit'])->name('edit');
@@ -127,9 +126,12 @@ Route::middleware(['auth', 'can:admin'])->group(function () {
             Route::post('/import-add', [FormasiController::class, 'importAdd'])->name('import.add');
             Route::post('/import-replace', [FormasiController::class, 'importReplace'])->name('import.replace');
         });
+
+        // Note: {formasi} show route must be last to avoid conflicting with other routes
+        Route::get('/{formasi}', [FormasiController::class, 'show'])->name('show');
+    });
     });
 
-    });
 
 // Version control routes (accessible by all authenticated users)
 Route::middleware('auth')->prefix('versions')->name('versions.')->group(function () {
