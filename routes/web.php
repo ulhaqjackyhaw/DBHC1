@@ -129,13 +129,14 @@ Route::middleware(['auth', 'can:admin'])->group(function () {
         });
     });
 
-    // Version control (admin only)
-    Route::prefix('versions')->name('versions.')->group(function () {
-        Route::get('/', [VersionController::class, 'index'])->name('index');
-        Route::post('/', [VersionController::class, 'store'])->name('store');
-        Route::post('/{version}/restore', [VersionController::class, 'restore'])->name('restore');
-        Route::get('/{version}/download', [VersionController::class, 'download'])->name('download');
-        Route::delete('/{version}', [VersionController::class, 'destroy'])->name('destroy');
     });
+
+// Version control routes (accessible by all authenticated users)
+Route::middleware('auth')->prefix('versions')->name('versions.')->group(function () {
+    Route::get('/', [VersionController::class, 'index'])->name('index');
+    Route::post('/', [VersionController::class, 'store'])->name('store');
+    Route::post('/{version}/restore', [VersionController::class, 'restore'])->name('restore');
+    Route::get('/{version}/download', [VersionController::class, 'download'])->name('download');
+    Route::delete('/{version}', [VersionController::class, 'destroy'])->name('destroy');
 });
 

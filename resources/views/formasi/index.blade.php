@@ -18,6 +18,8 @@
         </div>
     @endif
 
+                       @can('admin')
+
     {{-- Bagian Upload Massal --}}
     <div class="bg-white p-4 sm:p-5 rounded-xl shadow-sm mb-5">
         <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
@@ -49,6 +51,7 @@
             </div>
         </div>
     </div>
+     @endcan
 
     {{-- Tabel Data --}}
     <div class="bg-white rounded-xl shadow-sm" x-data="formasiTable({{ $formasi->toJson() ?? '[]' }})">
@@ -56,13 +59,15 @@
             {{-- Header Tabel --}}
             <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
                 <div class="d-flex align-items-center gap-2">
+                    @can('admin')
                     <a href="{{ route('formasi.create') }}" class="btn btn-primary d-flex align-items-center gap-2">
                         <i class="bi bi-plus-circle-fill"></i>
                         <span class="text-nowrap">Tambah Data</span>
                     </a>
+                    @endcan    
                     <a href="{{ route('formasi.export') }}" class="btn btn-outline-success d-flex align-items-center gap-2">
                         <i class="bi bi-file-earmark-spreadsheet-fill"></i>
-                        <span class="text-nowrap">Export Excel</span>
+                        <span class="text-nowrap">Download Data Excel</span>
                     </a>
                 </div>
                 {{-- Sisi Kanan: Filter dan Search --}}
@@ -113,7 +118,10 @@
                             <th @click="sortBy('kuota')"
                                 class="text-slate-500 font-semibold cursor-pointer user-select-none text-nowrap">Kuota <i
                                     :class="sortIcon('kuota')"></i></th>
+                        
+                            @can(abilities: 'admin')    
                             <th class="text-slate-500 font-semibold text-nowrap">Aksi</th>
+                            @endcan
                         </tr>
                     </thead>
                     <tbody>
@@ -130,6 +138,7 @@
                                         x-text="item.grade"></span></td>
                                 <td><span class="badge bg-success-subtle text-success-emphasis rounded-pill"
                                         x-text="item.kuota"></span></td>
+                                @can(abilities: 'admin')
                                 <td>
                                     <div class="d-flex gap-2">
                                         <a :href="`/formasi/${item.id}/edit`" class="btn btn-sm btn-outline-warning"
@@ -143,6 +152,7 @@
                                         </button>
                                     </div>
                                 </td>
+                                @endcan
                             </tr>
                         </template>
                         <tr x-show="!paginatedFormasi.length">

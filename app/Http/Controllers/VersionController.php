@@ -55,12 +55,25 @@ class VersionController extends Controller
                 // per 500 baris agar tidak membebani memori server.
                 DataKaryawan::query()->chunkById(500, function ($employees) use ($version) {
                     $historyData = $employees->map(function ($employee) use ($version) {
-                        $attributes = $employee->getAttributes();
-                        $attributes['version_id'] = $version->id;
-                        unset($attributes['id']);
-                        $attributes['created_at'] = now();
-                        $attributes['updated_at'] = now();
-                        return $attributes;
+                        return [
+                            'version_id' => $version->id,
+                            'nik' => $employee->nik,
+                            'nama' => $employee->nama,
+                            'gender' => $employee->gender,
+                            'kode_jabatan' => $employee->kode_jabatan,
+                            'lokasi' => $employee->lokasi,
+                            'unit' => $employee->unit,
+                            'jabatan' => $employee->jabatan,
+                            'kelompok_kelas_jabatan' => $employee->kelompok_kelas_jabatan,
+                            'grade' => $employee->grade,
+                            'status_kepegawaian' => $employee->status_kepegawaian,
+                            'asal_instansi' => $employee->asal_instansi,
+                            'tanggal_lahir' => $employee->tanggal_lahir,
+                            'pendidikan_terakhir' => $employee->pendidikan_terakhir,
+                            'tmt' => $employee->tmt,
+                            'created_at' => now(),
+                            'updated_at' => now()
+                        ];
                     })->toArray();
 
                     if (!empty($historyData)) {
@@ -90,9 +103,24 @@ class VersionController extends Controller
             EmployeeHistory::where('version_id', $version->id)
                 ->chunkById(500, function ($histories) {
                     $restoredData = $histories->map(function ($history) {
-                        $attributes = $history->getAttributes();
-                        unset($attributes['id'], $attributes['version_id']);
-                        return $attributes;
+                        return [
+                            'nik' => $history->nik,
+                            'nama' => $history->nama,
+                            'gender' => $history->gender,
+                            'kode_jabatan' => $history->kode_jabatan,
+                            'lokasi' => $history->lokasi,
+                            'unit' => $history->unit,
+                            'jabatan' => $history->jabatan,
+                            'kelompok_kelas_jabatan' => $history->kelompok_kelas_jabatan,
+                            'grade' => $history->grade,
+                            'status_kepegawaian' => $history->status_kepegawaian,
+                            'asal_instansi' => $history->asal_instansi,
+                            'tanggal_lahir' => $history->tanggal_lahir,
+                            'pendidikan_terakhir' => $history->pendidikan_terakhir,
+                            'tmt' => $history->tmt,
+                            'created_at' => now(),
+                            'updated_at' => now()
+                        ];
                     })->toArray();
 
                     if (!empty($restoredData)) {

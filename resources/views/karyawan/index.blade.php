@@ -194,7 +194,10 @@
                                 class="text-slate-500 font-semibold cursor-pointer user-select-none text-nowrap">Status <i
                                     :class="sortIcon('status_kepegawaian')"></i></th>
                             <th class="text-slate-500 font-semibold text-nowrap">Detail</th>
+                             @can(abilities: 'admin')
+
                             <th class="text-slate-500 font-semibold text-nowrap">Aksi</th>
+                            @endcan
                         </tr>
                     </thead>
                     <tbody>
@@ -217,6 +220,8 @@
                                         <i class="bi bi-eye-fill"></i>
                                     </button>
                                 </td>
+                                                    @can('admin')
+
                                 <td>
                                     <div class="d-flex gap-2" @click.stop>
                                         <a :href="`/data-karyawan/${employee.id}/edit`"
@@ -230,6 +235,8 @@
                                         </button>
                                     </div>
                                 </td>
+                                                        @endcan
+
                             </tr>
                         </template>
                         <tr x-show="!paginatedEmployees.length">
@@ -373,11 +380,13 @@
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                             <i class="bi bi-x-circle me-1"></i>Tutup
                         </button>
+                     @can(abilities: 'admin')
                         <a x-show="selectedEmployee"
                             :href="selectedEmployee ? `/data-karyawan/${selectedEmployee.id}/edit` : '#'"
                             class="btn btn-warning">
                             <i class="bi bi-pencil-fill me-1"></i>Edit Data
                         </a>
+                    @endcan
                     </div>
                 </div>
             </div>

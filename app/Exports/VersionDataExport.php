@@ -25,21 +25,20 @@ class VersionDataExport implements FromCollection, WithHeadings, WithMapping
     public function headings(): array
     {
         return [
-            'NIK',
-            'Nama',
-            'Gender',
-            'Kode Jabatan',
-            'Lokasi',
-            'Unit',
-            'Jabatan',
-            'Kelompok Kelas Jabatan',
-            'Grade',
-            'Status Kepegawaian',
-            'Tanggal Lahir',
-            'Umur (Tahun)',
-            'Pendidikan Terakhir',
-            'TMT',
-            'Masa Kerja (Tahun)'
+            'nik',
+            'nama',
+            'gender',
+            'kode_jabatan',
+            'lokasi',
+            'unit',
+            'jabatan',
+            'kelompok_kelas_jabatan',
+            'grade',
+            'status_kepegawaian',
+            'asal_instansi',
+            'tanggal_lahir',
+            'pendidikan_terakhir',
+            'tmt'
         ];
     }
 
