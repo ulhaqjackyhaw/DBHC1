@@ -53,7 +53,7 @@
             </li>
 
 
-
+            @can(abilities: 'admin')
             {{-- Versions --}}
             <li class="nav-item">
                 <a href="{{ route('versions.index') }}"
@@ -61,7 +61,7 @@
                     <i class="bi bi-archive-fill me-3 w-5"></i> Versions
                 </a>
             </li>
-
+            @endcan
             {{-- Tambahkan menu lain di sini dengan pola yang sama --}}
         </ul>
     </nav>
