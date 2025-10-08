@@ -59,15 +59,17 @@ Route::middleware('auth', )->group(function () {
     // Data Karyawan - Basic access routes (view only)
     Route::prefix('data-karyawan')->name('karyawan.')->group(function () {
         Route::get('/', [DataKaryawanController::class, 'index'])->name('index');
-        Route::get('/create', [DataKaryawanController::class, 'create'])->name('create');
-        Route::post('/', [DataKaryawanController::class, 'store'])->name('store');
         Route::get('/template/download', [DataKaryawanController::class, 'downloadTemplate'])->name('template.download');
         Route::get('/export', [DataKaryawanController::class, 'export'])->name('export');
-        // Note: {dataKaryawan} route must be last to avoid conflicting with other routes
-        Route::get('/{dataKaryawan}', [DataKaryawanController::class, 'show'])->name('show');
     });
 
-    // Formasi routes moved to admin section
+    // Formasi - Basic access routes (view only) - accessible by all authenticated users
+    Route::get('/formasi', [FormasiController::class, 'index'])->name('formasi.index');
+    Route::get('/formasi/template/download', [FormasiController::class, 'downloadTemplate'])->name('formasi.template.download');
+    Route::get('/formasi/export', [FormasiController::class, 'export'])->name('formasi.export');
+
+    // Dashboard - Detail jabatan lowong bisa diakses semua user
+    Route::get('/dashboard/jabatan-lowong-detail', [DashboardController::class, 'getJabatanLowongDetail'])->name('dashboard.jabatan.detail');
 });
 
 /*
@@ -84,8 +86,7 @@ Route::middleware(['auth', 'can:admin'])->group(function () {
         'url' => request()->url()
     ]);
 
-    // Dashboard admin-only features
-    Route::get('/dashboard/jabatan-lowong-detail', [DashboardController::class, 'getJabatanLowongDetail'])->name('dashboard.jabatan.detail');
+    // Dashboard admin-only features  
     Route::get('/dashboard/jabatan-lowong-export', [DashboardController::class, 'exportJabatanLowongDetail'])->name('dashboard.jabatan.export');
 
     // Data Karyawan - Admin features
@@ -107,14 +108,8 @@ Route::middleware(['auth', 'can:admin'])->group(function () {
         Route::delete('{dataKaryawan}', [DataKaryawanController::class, 'destroy'])->name('destroy');
     });
 
-    // Formasi - All routes (both admin and basic access)
+    // Formasi - Admin-only operations
     Route::prefix('formasi')->name('formasi.')->group(function () {
-        // Basic access routes (view only)
-        Route::get('/', [FormasiController::class, 'index'])->name('index');
-        Route::get('/template/download', [FormasiController::class, 'downloadTemplate'])->name('template.download');
-        Route::get('/export', [FormasiController::class, 'export'])->name('export');
-
-        // Admin-only operations
         Route::get('/create', [FormasiController::class, 'create'])->name('create');
         Route::post('/', [FormasiController::class, 'store'])->name('store');
         Route::get('/{formasi}/edit', [FormasiController::class, 'edit'])->name('edit');
@@ -126,12 +121,27 @@ Route::middleware(['auth', 'can:admin'])->group(function () {
             Route::post('/import-add', [FormasiController::class, 'importAdd'])->name('import.add');
             Route::post('/import-replace', [FormasiController::class, 'importReplace'])->name('import.replace');
         });
-
-        // Note: {formasi} show route must be last to avoid conflicting with other routes
-        Route::get('/{formasi}', [FormasiController::class, 'show'])->name('show');
     });
-    });
+});
 
+// Debug route untuk test authentication
+Route::middleware('auth')->get('/debug-auth', function () {
+    $user = auth()->user();
+    return response()->json([
+        'authenticated' => auth()->check(),
+        'user' => $user ? [
+            'id' => $user->id,
+            'email' => $user->email,
+            'role' => $user->role,
+            'isAdmin' => $user->isAdmin()
+        ] : null,
+        'can_admin' => auth()->check() ? auth()->user()->can('admin') : false,
+    ]);
+})->name('debug.auth');
+
+// Resource show routes - harus paling akhir agar tidak conflict dengan route lain
+Route::middleware('auth')->get('/data-karyawan/{dataKaryawan}', [DataKaryawanController::class, 'show'])->name('karyawan.show');
+Route::middleware('auth')->get('/formasi/{formasi}', [FormasiController::class, 'show'])->name('formasi.show');
 
 // Version control routes (accessible by all authenticated users)
 Route::middleware('auth')->prefix('versions')->name('versions.')->group(function () {

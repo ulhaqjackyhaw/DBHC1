@@ -394,7 +394,8 @@
                             <i class="fa-solid fa-info-circle me-2"></i>
                             <strong>Tips:</strong> Klik pada segmen chart <strong>Organik</strong> untuk melihat analisis
                             mendalam
-                            karyawan tetap,<br> atau klik <strong>Outsourcing</strong> untuk data karyawan kontrak/outsourcing.
+                            karyawan tetap,<br> atau klik <strong>Outsourcing</strong> untuk data karyawan
+                            kontrak/outsourcing.
                             <button type="button" class="btn-close btn-close-sm" data-bs-dismiss="alert" aria-label="Close"
                                 style="font-size: 0.7rem;"></button>
                         </div>
@@ -471,7 +472,8 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <h6 class="card-title">Rekapitulasi Jabatan Lowong Karyawan Organik PT Angkasa Pura Indonesia Regional 1</h6>
+                        <h6 class="card-title">Rekapitulasi Jabatan Lowong Karyawan Organik PT Angkasa Pura Indonesia
+                            Regional 1</h6>
                         @if (isset($jabatanLowongGrouped) && $jabatanLowongGrouped->isNotEmpty())
 
                             <!-- KARTU TOTAL KESELURUHAN (BARU) -->
@@ -645,9 +647,11 @@
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                         <i class="fa-solid fa-times me-1"></i> Tutup
                     </button>
-                    <button type="button" class="btn btn-primary" id="btnExportDetail">
-                        <i class="fa-solid fa-download me-1"></i> Export Excel
-                    </button>
+                    @can('admin')
+                        <button type="button" class="btn btn-primary" id="btnExportDetail">
+                            <i class="fa-solid fa-download me-1"></i> Export Excel
+                        </button>
+                    @endcan
                 </div>
             </div>
         </div>

@@ -17,9 +17,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
-
-                       @can('admin')
-
+     @can('admin')
     {{-- Bagian Upload Massal --}}
     <div class="bg-white p-4 sm:p-5 rounded-xl shadow-sm mb-5">
         <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
