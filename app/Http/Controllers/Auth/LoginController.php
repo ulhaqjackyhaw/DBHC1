@@ -53,9 +53,8 @@ class LoginController extends Controller
         }
 
         // 3. Jika gagal, kembali ke halaman login dengan pesan error
-        return back()->withErrors([
-            'email' => 'Email atau password yang Anda masukkan salah.',
-        ])->onlyInput('email');
+        return back()->with('error', 'Email atau password yang Anda masukkan salah. Silakan coba lagi.')
+            ->onlyInput('email');
     }
 
     /**
