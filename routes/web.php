@@ -122,6 +122,15 @@ Route::middleware(['auth', 'can:admin'])->group(function () {
             Route::post('/import-replace', [FormasiController::class, 'importReplace'])->name('import.replace');
         });
     });
+
+    // User Management - Admin only
+    Route::resource('users', \App\Http\Controllers\UserController::class)->except(['create', 'store', 'show', 'edit', 'update', 'destroy']);
+    Route::get('users/create', [\App\Http\Controllers\UserController::class, 'create'])->name('users.create');
+    Route::post('users', [\App\Http\Controllers\UserController::class, 'store'])->name('users.store');
+    Route::get('users/{user}', [\App\Http\Controllers\UserController::class, 'show'])->name('users.show');
+    Route::get('users/{user}/edit', [\App\Http\Controllers\UserController::class, 'edit'])->name('users.edit');
+    Route::put('users/{user}', [\App\Http\Controllers\UserController::class, 'update'])->name('users.update');
+    Route::delete('users/{user}', [\App\Http\Controllers\UserController::class, 'destroy'])->name('users.destroy');
 });
 
 // Debug route untuk test authentication

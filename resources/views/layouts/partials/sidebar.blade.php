@@ -54,15 +54,25 @@
 
 
             @can(abilities: 'admin')
-            {{-- Versions --}}
-            <li class="nav-item">
-                <a href="{{ route('versions.index') }}"
-                    class="nav-link d-flex align-items-center rounded-lg px-3 py-2 {{ request()->routeIs('versions.*') ? 'text-white bg-slate-900/50' : 'text-slate-300 hover:bg-slate-700 hover:text-white' }}">
-                    <i class="bi bi-archive-fill me-3 w-5"></i> Versions
-                </a>
-            </li>
+                {{-- Versions --}}
+                <li class="nav-item">
+                    <a href="{{ route('versions.index') }}"
+                        class="nav-link d-flex align-items-center rounded-lg px-3 py-2 {{ request()->routeIs('versions.*') ? 'text-white bg-slate-900/50' : 'text-slate-300 hover:bg-slate-700 hover:text-white' }}">
+                        <i class="bi bi-archive-fill me-3 w-5"></i> Versions
+                    </a>
+                </li>
+
+                {{-- Kelola User --}}
+                <li class="nav-item">
+                    <a href="{{ route('users.index') }}"
+                        class="nav-link d-flex align-items-center rounded-lg px-3 py-2 {{ request()->routeIs('users.*') ? 'text-white bg-slate-900/50' : 'text-slate-300 hover:bg-slate-700 hover:text-white' }}">
+                        <i class="bi bi-person-plus-fill me-3 w-5"></i> Kelola User
+                    </a>
+                </li>
             @endcan
             {{-- Tambahkan menu lain di sini dengan pola yang sama --}}
+
+
         </ul>
     </nav>
 

@@ -322,7 +322,7 @@
 
 {{-- Konten utama --}}
 @section('content')
-    <div class="container-fluid">
+    <div class="bg-white p-4 sm:p-5 rounded-xl shadow-sm mb-5">
 
         {{-- ROW 0: KPI Ringkas (Modernized with Icons) --}}
         <div class="row g-4 mb-4">
